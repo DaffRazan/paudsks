@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-// namespace model
-use App\Guru;
-
-class GuruController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +13,7 @@ class GuruController extends Controller
      */
     public function index()
     {
-        $guru = Guru::all();
-        return view('staff', ['guru' => $guru]);
+        return view('admin');
     }
 
     /**

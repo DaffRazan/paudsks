@@ -20,4 +20,14 @@ class PagesController extends Controller
     {
         return view('kegiatan');
     }
+
+    public function fasilitas()
+    {
+        return view('fasilitas');
+    }
+
+    public function admin()
+    {
+        return view('admin');
+    }
 }

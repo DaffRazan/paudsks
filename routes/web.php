@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'PagesController@beranda');
-Route::get('/profilguru', 'GuruController@index');
+Route::get('/staff', 'GuruController@index');
 Route::get('/kegiatan', 'PagesController@kegiatan');
+Route::get('/fasilitas', 'PagesController@fasilitas');
 Route::get('/galeri', 'PagesController@galeri');
+Route::get('/admin', 'AdminController@index');
