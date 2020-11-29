@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Auth;
 // namespace model
 use App\Guru;
 
+// operator view
 class GuruController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +25,8 @@ class GuruController extends Controller
     public function index()
     {
         $guru = Guru::all();
-        return view('staff', ['guru' => $guru]);
+        $user = Auth::user();
+        return view('admin.staff', ['guru' => $guru, 'admin' => $user->hasRole('admin')]);
     }
 
     /**
@@ -26,9 +34,10 @@ class GuruController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id = null)
     {
-        //
+        $guru = Guru::find($id);
+        return view('admin.add-staff', ['guru' => $guru]);
     }
 
     /**
@@ -39,7 +48,16 @@ class GuruController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'tgl_mulai_tugas' =>  ['required'],
+            'pendidikan' =>  ['required', 'string', 'max:255'],
+            'alamat' =>  ['required', 'string', 'max:255'],
+            'jabatan' =>  ['required', 'string', 'max:255'],
+        ]);
+
+        Guru::create($request->except('_token'));
+        return redirect('admin/staff')->with('status', 'Data Mahasiswa Berhasil Ditambah');
     }
 
     /**
@@ -50,7 +68,10 @@ class GuruController extends Controller
      */
     public function show($id)
     {
-        //
+        $guru = DB::table('guru')->where('id', $id)->first();
+
+        $user = Auth::user();
+        return view('admin/detail-staff', ['guru' => $guru, 'admin' => $user->hasRole('admin')]);
     }
 
     /**
@@ -61,7 +82,8 @@ class GuruController extends Controller
      */
     public function edit($id)
     {
-        //
+        $guru = Guru::find($id);
+        return view('admin.update-staff', ['guru' => $guru]);
     }
 
     /**
@@ -73,7 +95,16 @@ class GuruController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'tgl_mulai_tugas' =>  ['required'],
+            'pendidikan' =>  ['required', 'string', 'max:255'],
+            'alamat' =>  ['required', 'string', 'max:255'],
+            'jabatan' =>  ['required', 'string', 'max:255'],
+        ]);
+
+        Guru::where('id', $id)->update($request->except(['_token', '_method']));
+        return redirect('admin/staff')->with('status', 'Data Mahasiswa Berhasil Diubah');
     }
 
     /**
@@ -84,6 +115,9 @@ class GuruController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $guru = Guru::find($id);
+        $guru->delete();
+
+        return redirect('admin/staff')->with('status', 'Data Mahasiswa Berhasil Dihapus');
     }
 }

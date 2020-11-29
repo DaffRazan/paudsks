@@ -15,8 +15,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $table = 'users';
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role', 'isActive',
     ];
 
     /**
@@ -36,4 +37,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function getRoleLabelAttribute()
+    {
+        $roles = ['1' => 'admin', '2' => 'operator'];
+        return $roles[strval($this->role)];
+    }
+
+    public function hasRole($role)
+    {
+        $roles = ['operator' => '2'];
+
+        return array_key_exists($role, $roles);
+    }
+
+    public function isAdmin()
+    {
+        if ($this->role === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

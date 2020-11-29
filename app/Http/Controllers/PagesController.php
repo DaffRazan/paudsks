@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Guru;
+use App\Kegiatan;
+use App\Galeri;
+use App\Fasilitas;
 use Illuminate\Http\Request;
 
+// user view
 class PagesController extends Controller
 {
     public function beranda()
@@ -13,21 +18,25 @@ class PagesController extends Controller
 
     public function galeri()
     {
-        return view('galeri');
+        $galeri = Galeri::all();
+        return view('galeri', ['galeri' => $galeri]);
     }
 
     public function kegiatan()
     {
-        return view('kegiatan');
+        $kegiatan = Kegiatan::all();
+        return view('kegiatan', ['kegiatan' => $kegiatan]);
     }
 
     public function fasilitas()
     {
-        return view('fasilitas');
+        $fasilitas = Fasilitas::all();
+        return view('fasilitas', ['fasilitas' => $fasilitas]);
     }
 
-    public function admin()
+    public function staff()
     {
-        return view('admin');
+        $guru = Guru::all();
+        return view('staff', ['guru' => $guru]);
     }
 }

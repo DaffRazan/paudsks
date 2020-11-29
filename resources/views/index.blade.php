@@ -152,21 +152,21 @@
     <div class="row my-5">
         <div class="col-lg-4">
             <div class="d-flex flex-column text-center">
-                <img src="{{ asset('images/forest.svg') }}" alt="green school">
+                <img class="card-img-top" width="100" height="100" src="{{ asset('images/forest.svg') }}" alt="green school">
                 <h3 class="my-2">Green School</h3>
                 <p class="mx-auto" style="max-width: 75%">Sekolah dibangun dengan lingkungan yang banyak tumbuhan dan bernuansa alam agar udara fresh.</p>
             </div>
         </div>
         <div class="col-lg-4">
             <div class="d-flex flex-column text-center">
-                <img src="{{ asset('images/ac.svg') }}" alt="ac">
+                <img class="card-img-top" width="100" height="100" src="{{ asset('images/ac.svg') }}" alt="ac">
                 <h3 class="my-2">Full AC</h3>
                 <p class="mx-auto" style="max-width: 75%">Seluruh ruangan dilengkapi AC agar proses belajar menjadi nyaman.</p>
             </div>
         </div>
         <div class="col-lg-4">
             <div class="d-flex flex-column text-center">
-                <img src="{{ asset('images/dice.svg') }}" alt="dice">
+                <img class="card-img-top" width="100" height="100" src="{{ asset('images/dice.svg') }}" alt="dice">
                 <h3 class="my-2">Mainan yang Edukatif</h3>
                 <p class="mx-auto" style="max-width: 75%">Kami memberikan pembelajaran yang menyenangkan bagi murid.</p>
             </div>
@@ -176,21 +176,21 @@
     <div class="row my-5">
         <div class="col-lg-4">
             <div class="d-flex flex-column text-center">
-                <img src="{{ asset('images/fishpond.svg') }}" alt="fishpond">
+                <img class="card-img-top" width="100" height="100" src="{{ asset('images/fishpond.svg') }}" alt="fishpond">
                 <h3 class="my-2">Kolam Ikan</h3>
                 <p class="mx-auto" style="max-width: 75%">Terdapat kolam ikan agar murid dapat bermain dengan ikan.</p>
             </div>
         </div>
         <div class="col-lg-4">
             <div class="d-flex flex-column text-center">
-                <img src="{{ asset('images/basketcourt.svg') }}" alt="basketcourt">
+                <img class="card-img-top" width="100" height="100" src="{{ asset('images/basketcourt.svg') }}" alt="basketcourt">
                 <h3 class="my-2">Lapangan Basket Mini</h3>
                 <p class="mx-auto" style="max-width: 75%">Terdapat lapangan basket mini untuk murid berolahraga.</p>
             </div>
         </div>
         <div class="col-lg-4">
             <div class="d-flex flex-column text-center">
-                <img src="{{ asset('images/teacher.svg') }}" alt="teacher">
+                <img class="card-img-top" width="100" height="100" src="{{ asset('images/teacher.svg') }}" alt="teacher">
                 <h3 class="my-2">Tenaga Pengajar Terbaik</h3>
                 <p class="mx-auto" style="max-width: 75%">Seluruh tenaga pengajar berkompeten dan berpengalaman di bidangnya.</p>
             </div>
