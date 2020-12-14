@@ -52,13 +52,19 @@ class GaleriController extends Controller
         ]);
 
         // lokasi gambar
-        $path = $request->file('gambar')->store('images', 'public');
+        $gambar = $request->file('gambar');
 
-        // tambahkan data ke db
-        $data['nama_gambar'] = $request->input('nama_gambar');
-        $data['gambar'] = $path;
+        // nama file
+        $nama_file = time() . "_" . $gambar->getClientOriginalName();
 
-        Galeri::create($data);
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'storage';
+        $gambar->move($tujuan_upload, $nama_file);
+
+        Galeri::create([
+            'nama_gambar' => $request->nama_gambar,
+            'gambar' => $nama_file,
+        ]);
 
         return redirect('admin/galeri')->with('status', 'Galeri Berhasil Ditambahkan');
     }
@@ -103,16 +109,19 @@ class GaleriController extends Controller
         );
 
         // lokasi gambar
-        $path = $request->file('gambar')->store('images', 'public');
+        $gambar = $request->file('gambar');
 
-        // tambahkan data ke db
-        $data['nama_gambar'] = $request->input('nama_gambar');
-        $data['gambar'] = $path;
+        // nama file
+        $nama_file = time() . "_" . $gambar->getClientOriginalName();
+
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'storage';
+        $gambar->move($tujuan_upload, $nama_file);
 
         Galeri::where('id', $id)
             ->update([
-                'nama_gambar' => $data['nama_gambar'],
-                'gambar' =>  $data['gambar'],
+                'nama_gambar' => $request->nama_gambar,
+                'gambar' => $nama_file,
             ]);
 
         return redirect('admin/galeri')->with('status', 'Galeri Berhasil Diubah');
@@ -126,14 +135,13 @@ class GaleriController extends Controller
      */
     public function destroy($id)
     {
-        $galeri = Galeri::find($id);
-        $galeri->delete();
+        // hapus file
+        $galeri = Galeri::where('id', $id)->first();
+        File::delete('storage/' . $galeri->gambar);
 
-        // $image_path = "/storage/images/filename.ext";  // Value is not URL but directory file path
-        // if (File::exists($image_path)) {
-        //     File::delete($image_path);
-        // }
+        // hapus data di db
+        Galeri::findOrFail($id)->delete();
 
-        return redirect('/admin/galeri')->with('status', 'Galeri Berhasil Dihapus');
+        return response()->json(['success' => 'Galeri has been deleted.']);
     }
 }

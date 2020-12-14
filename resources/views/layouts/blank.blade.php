@@ -31,7 +31,7 @@
   <script src="{{asset('adm-assets/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
   <script src="{{asset('adm-assets/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
   <!-- Argon JS -->
-  <script src="{{asset('assets/js/argon.js?v=1.2.0')}}"></script>
+  <script src="{{asset('adm-assets/assets/js/argon.js?v=1.2.0')}}"></script>
 </body>
 
 </html>

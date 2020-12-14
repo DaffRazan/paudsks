@@ -70,24 +70,26 @@
             </div>
         </div> --}}
 
-        <div class="form-group row mb-0">
-            <div class="col-md-12 offset-md-2">
+        <div class="form-group row">
+            <div class="col-sm-2 col-md-4 col-form-label text-md-right">
                 <button type="submit" class="btn btn-primary">
                     {{ __('Login') }}
                 </button>
+            </div>
 
-                @if (Route::has('password.request'))
-                <a class="btn btn-link" href="{{ route('password.request') }}">
-                    Lupa Password?
-                    {{-- {{ __('Forgot Your Password?') }} --}}
-                </a>
-                @endif
+            <div class="col-md-8">
+                    <a class="btn btn-link mr-0 pr-0 ml-0"
+                        href="{{ route('password.request') }}">
+                        Lupa Password?
+                        {{-- {{ __('Forgot Your Password?') }} --}}
+                    </a>
 
-                <a class="btn btn-link" href="https://wa.me/6282361143553" target="__blank">
-                    Kontak Admin
-                </a>
+                    <a class="btn btn-link" href="https://wa.me/6282361143553" target="__blank">
+                        Kontak Admin
+                    </a>
             </div>
         </div>
+
         </form>
     </div>
 </div>

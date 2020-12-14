@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 // namespace model
 use App\Fasilitas;
+use Illuminate\Support\Facades\File;
 
 class FasilitasController extends Controller
 {
@@ -52,14 +53,20 @@ class FasilitasController extends Controller
         ]);
 
         // lokasi gambar
-        $path = $request->file('gambar_fasilitas')->store('images', 'public');
+        $gambar_fasilitas = $request->file('gambar_fasilitas');
 
-        // tambahkan data ke db
-        $data['nama_fasilitas'] = $request->input('nama_fasilitas');
-        $data['deskripsi'] = $request->input('deskripsi');
-        $data['gambar_fasilitas'] = $path;
+        // nama file
+        $nama_file = time() . "_" . $gambar_fasilitas->getClientOriginalName();
 
-        Fasilitas::create($data);
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'storage';
+        $gambar_fasilitas->move($tujuan_upload, $nama_file);
+
+        Fasilitas::create([
+            'nama_fasilitas' => $request->nama_fasilitas,
+            'deskripsi' => $request->deskripsi,
+            'gambar_fasilitas' => $nama_file,
+        ]);
 
         return redirect('admin/fasilitas')->with('status', 'Fasilitas Berhasil Ditambahkan');
     }
@@ -105,19 +112,20 @@ class FasilitasController extends Controller
         ]);
 
         // lokasi gambar
-        $path = $request->file('gambar_fasilitas')->store('images', 'public');
+        $gambar_fasilitas = $request->file('gambar');
 
-        // tambahkan data ke db
-        $data['nama_fasilitas'] = $request->input('nama_fasilitas');
-        $data['deskripsi'] = $request->input('deskripsi');
-        $data['gambar_fasilitas'] = $path;
+        // nama file
+        $nama_file = time() . "_" . $gambar_fasilitas->getClientOriginalName();
 
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'storage';
+        $gambar_fasilitas->move($tujuan_upload, $nama_file);
 
         Fasilitas::where('id', $id)
             ->update([
-                'nama_fasilitas' => $data['nama_fasilitas'],
-                'deskripsi' =>  $data['deskripsi'],
-                'gambar_fasilitas' =>  $data['gambar_fasilitas'],
+                'nama_fasilitas' => $request->nama_fasilitas,
+                'deskripsi' => $request->deskripsi,
+                'gambar_fasilitas' => $nama_file,
             ]);
 
         return redirect('admin/fasilitas')->with('status', 'Fasilitas Berhasil Diubah');
@@ -131,9 +139,13 @@ class FasilitasController extends Controller
      */
     public function destroy($id)
     {
+        // hapus file
+        $fasilitas = Fasilitas::where('id', $id)->first();
+        File::delete('storage/' . $fasilitas->gambar_fasilitas);
+
         $fasilitas = Fasilitas::find($id);
         $fasilitas->delete();
 
-        return redirect('/admin/fasilitas')->with('status', 'Fasilitas Berhasil Dihapus');
+        return response()->json(['success' => 'Fasilitas has been deleted.']);
     }
 }

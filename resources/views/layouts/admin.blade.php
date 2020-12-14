@@ -19,59 +19,73 @@
         type="text/css">
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{asset('adm-assets/assets/css/argon.css?v=1.2.0')}}" type="text/css">
+
+    <!-- csrf-token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
     <!-- Sidenav -->
-    <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+    <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white" id="sidenav-main">
         <div class="scrollbar-inner">
             <!-- Brand -->
             {{-- <div class="sidenav-header  align-items-center">
                 <a class="navbar-brand" href="javascript:void(0)">
                     <img src="{{asset('adm-assets/assets/img/brand/blue.png')}}" class="navbar-brand-img" alt="...">
-                </a>
-            </div> --}}
-            <div class="navbar-inner">
-                <!-- Collapse -->
-                <div class="collapse navbar-collapse" id="sidenav-collapse-main">
-                    <!-- Nav items -->
-
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/staff')) ? 'active' : '' }}" href="{{ url('/admin/staff') }}">
-                                <i class="ni ni-circle-08"  style="color: #5e72e4;"></i>
-                                <span class="nav-link-text">Manage Staff</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/fasilitas')) ? 'active' : '' }}" href="{{ url('/admin/fasilitas') }}">
-                                <i class="ni ni-books" style="color: #5e72e4;"></i>
-                                <span class="nav-link-text">Manage Fasilitas</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/kegiatan')) ? 'active' : '' }}" href="{{ url('/admin/kegiatan') }}">
-                                <i class="ni ni-single-copy-04"  style="color: #5e72e4;"></i>
-                                <span class="nav-link-text">Manage Kegiatan</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/galeri')) ? 'active' : '' }}" href="{{ url('/admin/galeri') }}">
-                                <i class="ni ni-album-2" style="color: #5e72e4;"></i>
-                                <span class="nav-link-text">Manage Galeri</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- Divider -->
-                    <hr class="my-3">
-                </div>
+            </a>
+        </div> --}}
+        <div class="navbar-inner">
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                <!-- Nav items -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{ (request()->is('admin/staff')) ? 'active' : '' }}"
+                            href="{{ url('/admin/staff') }}">
+                            <i class="ni ni-circle-08" style="color: #5e72e4;"></i>
+                            <span class="nav-link-text">Manage Staff</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{ (request()->is('admin/fasilitas')) ? 'active' : '' }}"
+                            href="{{ url('/admin/fasilitas') }}">
+                            <i class="ni ni-books" style="color: #5e72e4;"></i>
+                            <span class="nav-link-text">Manage Fasilitas</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{ (request()->is('admin/kegiatan')) ? 'active' : '' }}"
+                            href="{{ url('/admin/kegiatan') }}">
+                            <i class="ni ni-single-copy-04" style="color: #5e72e4;"></i>
+                            <span class="nav-link-text">Manage Kegiatan</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{ (request()->is('admin/galeri')) ? 'active' : '' }}"
+                            href="{{ url('/admin/galeri') }}">
+                            <i class="ni ni-album-2" style="color: #5e72e4;"></i>
+                            <span class="nav-link-text">Manage Galeri</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Divider -->
+                <hr class="my-3">
             </div>
+        </div>
         </div>
     </nav>
     <!-- Main content -->
@@ -100,7 +114,7 @@
                         <li class="nav-item d-xl-none">
                             <!-- Sidenav toggler -->
                             <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin"
-                                data-target="#sidenav-main">
+                                data-target="#sidenav-collapse-main">
                                 <div class="sidenav-toggler-inner">
                                     <i class="sidenav-toggler-line"></i>
                                     <i class="sidenav-toggler-line"></i>
@@ -108,11 +122,11 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item d-sm-none">
+                        {{-- <li class="nav-item d-sm-none">
                             <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
                                 <i class="ni ni-zoom-split-in"></i>
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- ADMIN DROPDOWN MENU --}}
                     </ul>
@@ -141,9 +155,7 @@
                                     <span>Ubah Password</span>
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+
                                 <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
                                     <i class="ni ni-user-run"></i>
@@ -153,6 +165,7 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
+
                             </div>
                         </li>
                     </ul>
@@ -165,7 +178,7 @@
             <div class="container-fluid">
                 <div class="header-body">
                     <div class="row align-items-center py-4">
-                        @yield('header-title')
+
                     </div>
                 </div>
             </div>
@@ -176,9 +189,8 @@
             <div class="row">
                 @yield('content')
             </div>
-
         </div>
-        
+
         <!-- Footer -->
         <footer class="footer pt-0 pl-4">
             <div class="row align-items-center justify-content-lg-between">
@@ -190,6 +202,7 @@
             </div>
         </footer>
     </div>
+
     <!-- Argon Scripts -->
     <!-- Core -->
     <script src="{{asset('adm-assets/assets/vendor/jquery/dist/jquery.min.js')}}"></script>
@@ -197,8 +210,10 @@
     <script src="{{asset('adm-assets/assets/vendor/js-cookie/js.cookie.js')}}"></script>
     <script src="{{asset('adm-assets/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
     <script src="{{asset('adm-assets/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
+
     <!-- Argon JS -->
-    <script src="{{asset('assets/js/argon.js?v=1.2.0')}}"></script>
+    <script src="{{asset('adm-assets/assets/js/argon.js?v=1.2.0')}}"></script>
+
 </body>
 
 </html>

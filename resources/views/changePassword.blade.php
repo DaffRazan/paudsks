@@ -1,12 +1,12 @@
 @extends('layouts.blank')
-@section('title', 'ADMIN PAUD SKS | Change Password');
+@section('title', 'ADMIN PAUD SKS | Change Password')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Change Password Admin PAUD Smart Kids School</div>
+                <div class="card-header">Ubah Password Admin PAUD Smart Kids School</div>
 
                 @foreach ($errors->all() as $error)
                 <div class="alert alert-danger">

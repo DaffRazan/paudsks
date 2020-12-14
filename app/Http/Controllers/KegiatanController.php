@@ -115,6 +115,6 @@ class KegiatanController extends Controller
         $kegiatan = Kegiatan::find($id);
         $kegiatan->delete();
 
-        return redirect('/admin/kegiatan')->with('status', 'Data Kegiatan Berhasil Dihapus');
+        return response()->json(['success' => 'Kegiatan has been deleted.']);
     }
 }

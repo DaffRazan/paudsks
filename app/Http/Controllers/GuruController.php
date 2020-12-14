@@ -118,6 +118,6 @@ class GuruController extends Controller
         $guru = Guru::find($id);
         $guru->delete();
 
-        return redirect('admin/staff')->with('status', 'Data Staff Berhasil Dihapus');
+        return response()->json(['success' => 'Staff has been deleted.']);
     }
 }

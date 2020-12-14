@@ -29,7 +29,7 @@
                 </thead>
                 <tbody class="list">
                     @foreach ($kegiatan as $kg)
-                    <tr>
+                    <tr id="kid{{$kg->id}}">
                         <td>
                             {{ $loop->iteration }}
                         </td>
@@ -47,7 +47,7 @@
                             </a>
 
                             <a class="btn btn-icon-only"
-                                onclick="event.preventDefault();document.getElementById('form-delete-kegiatan-{{$kg->id}}').submit();">
+                                onclick="deleteConfirmation({{$kg->id}})">
                                 <svg style="pointer-events: none" width="24" height="24" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -55,12 +55,6 @@
                                     </path>
                                 </svg>
                             </a>
-
-                            <form id="form-delete-kegiatan-{{$kg->id}}" action="{{ url('admin/kegiatan/'.$kg->id) }}"
-                                method="POST">
-                                @csrf
-                                {{ method_field('delete') }}
-                            </form>
 
                         </td>
                         <td>
@@ -76,6 +70,42 @@
         </div>
     </div>
 
-
 </div>
+
+<script>
+    function deleteConfirmation(id) {
+        swal({
+            title: "Delete?",
+            text: "Please ensure and then confirm!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: !0
+        }).then(function (e) {
+            if (e.value === true) {
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/admin/kegiatan/'+id,
+                    data: {
+                        _token: CSRF_TOKEN
+                    },
+                    dataType: 'JSON',
+                    success: function (response) {
+                        swal("Kegiatan berhasil dihapus", response.message, "success")
+                        $("#success").html(response.message)
+                        $('#kid'+id).remove()
+                    }
+                });
+            } else {
+                e.dismiss;
+            }
+        }, function (dismiss) {
+            return false;
+        })
+    }
+
+</script>
+
 @endsection

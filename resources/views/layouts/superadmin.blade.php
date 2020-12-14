@@ -20,14 +20,11 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{asset('adm-assets/assets/css/argon.css?v=1.2.0')}}" type="text/css">
 
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
     <!-- csrf-token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- jquery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
@@ -70,7 +67,7 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Search form -->
-                    <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
+                    {{-- <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
                         <div class="form-group mb-0">
                             <div class="input-group input-group-alternative input-group-merge">
                                 <div class="input-group-prepend">
@@ -83,9 +80,9 @@
                             aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
-                    </form>
+                    </form> --}}
                     <!-- Navbar links -->
-                    <ul class="navbar-nav align-items-center  ml-md-auto ">
+                    <ul class="navbar-nav align-items-center ml-md-auto">
                         <li class="nav-item d-xl-none">
                             <!-- Sidenav toggler -->
                             <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin"
@@ -97,15 +94,15 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item d-sm-none">
+                        {{-- <li class="nav-item d-sm-none">
                             <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
                                 <i class="ni ni-zoom-split-in"></i>
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- ADMIN DROPDOWN MENU --}}
                     </ul>
-                    <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+                    <ul class="navbar-nav align-items-center ml-auto ml-md-0 ">
                         <li class="nav-item dropdown">
                             <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
@@ -158,7 +155,7 @@
         </div>
 
         <!-- Page content -->
-        <div class="container-fluid mt--6">
+        <div class="container-fluid mt-6">
             <div class="row">
                 @yield('content')
             </div>

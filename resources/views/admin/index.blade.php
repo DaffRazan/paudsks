@@ -92,7 +92,7 @@
                     dataType: 'JSON',
                     success: function (response) {
                         $(`#id` + id).remove();
-                        swal("Operator dihapus!", response.message, "success");
+                        swal("Operator dihapus", response.message, "success");
                     }
                 });
             } else {

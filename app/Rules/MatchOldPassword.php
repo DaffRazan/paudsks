@@ -36,6 +36,6 @@ class MatchOldPassword implements Rule
      */
     public function message()
     {
-        return 'The :attribute must match with old password.';
+        return 'The :attribute is incorrect.';
     }
 }

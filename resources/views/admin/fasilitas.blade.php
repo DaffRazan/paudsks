@@ -31,7 +31,7 @@
                 </thead>
                 <tbody class="list">
                     @foreach ($fasilitas as $item)
-                    <tr>
+                    <tr id="fid{{$item->id}}">
                         <td>
                             {{ $loop->iteration }}
                         </td>
@@ -54,21 +54,14 @@
                                 </svg>
                             </a>
 
-                            <a class="btn btn-icon-only"
-                                onclick="event.preventDefault();document.getElementById('form-delete-fasilitas-{{$item->id}}').submit();">
+                            <button class="btn btn-icon-only" onclick="deleteConfirmation({{$item->id}})">
                                 <svg style="pointer-events: none" width="24" height="24" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                     </path>
                                 </svg>
-                            </a>
-
-                            <form id="form-delete-fasilitas-{{$item->id}}"
-                                action="{{ url('admin/fasilitas/'.$item->id) }}" method="POST">
-                                @csrf
-                                {{ method_field('delete') }}
-                            </form>
+                            </button>
                         </td>
                         <td>
                             {{ $item->created_at }}
@@ -85,4 +78,40 @@
 
 
 </div>
+
+<script>
+    function deleteConfirmation(id) {
+        swal({
+            title: "Delete?",
+            text: "Please ensure and then confirm!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: !0
+        }).then(function (e) {
+            if (e.value === true) {
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/admin/fasilitas/'+id,
+                    data: {
+                        _token: CSRF_TOKEN
+                    },
+                    dataType: 'JSON',
+                    success: function (response) {
+                        swal("Fasilitas berhasil dihapus", response.message, "success")
+                        $("#success").html(response.message)
+                        $('#fid'+id).remove()
+                    }
+                });
+            } else {
+                e.dismiss;
+            }
+        }, function (dismiss) {
+            return false;
+        })
+    }
+
+</script>
 @endsection

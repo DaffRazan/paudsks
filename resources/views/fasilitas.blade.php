@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <h1 class="mb-4">{{$item->nama_fasilitas}}</h1>
+            <h1 class="mb-4 text-sm-center text-md-left">{{$item->nama_fasilitas}}</h1>
             <p class="font-weight-light">{{$item->deskripsi}}</p>
         </div>
     </div>
