@@ -129,6 +129,6 @@ class AdminController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect('admin')->with('status', 'Operator Berhasil Dihapus');
+        return response()->json(['success' => 'record has been deleted']);
     }
 }

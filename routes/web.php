@@ -28,6 +28,10 @@ Route::get('/admin/operator/edit/{id}', 'AdminController@edit')->middleware('rol
 Route::patch('/admin/{id}', 'AdminController@update')->middleware('role:admin');
 Route::delete('/admin/{id}', 'AdminController@destroy')->middleware('role:admin');
 
+// CHANGE PASSWORD
+Route::get('change-password', 'ChangePasswordController@index');
+Route::post('change-password', 'ChangePasswordController@store')->name('change.password');
+
 // STAFF
 Route::get('/admin/staff', 'GuruController@index')->middleware('role:operator');
 Route::post('/admin/staff', 'GuruController@store')->middleware('role:operator');
@@ -62,4 +66,3 @@ Route::patch('/admin/fasilitas/{id}', 'FasilitasController@update')->middleware(
 Route::delete('/admin/fasilitas/{id}', 'FasilitasController@destroy')->middleware('role:operator');
 
 Auth::routes();
-Route::get('/auth/register', 'RegisterController@create');

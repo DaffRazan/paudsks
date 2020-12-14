@@ -15,7 +15,13 @@
             <div class="card-body">
                 <div class="form-group">
                     <label class="form-control-label" for="input-username">Nama Kegiatan</label>
-                    <input type="text" id="nama_kegiatan" class="form-control" name="nama_kegiatan" value="{{ $kegiatan->nama_kegiatan }}" required>
+                    <input type="text" id="nama_kegiatan" class="form-control @error('nama_kegiatan') is-invalid @enderror" name="nama_kegiatan"
+                        value="{{ $kegiatan->nama_kegiatan }}">
+                    @error('nama_kegiatan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
             </div>
         </form>

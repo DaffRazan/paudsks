@@ -47,7 +47,7 @@ class User extends Authenticatable
 
     public function hasRole($role)
     {
-        $roles = ['operator' => '2'];
+        $roles = ['admin' => '1', 'operator' => '2'];
 
         return array_key_exists($role, $roles);
     }

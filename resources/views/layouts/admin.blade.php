@@ -39,15 +39,15 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('admin/staff')) ? 'active' : '' }}" href="{{ url('/admin/staff') }}">
-                                <i class="ni ni-single-02 text-yellow"></i>
-                                <span class="nav-link-text">Manage Admin/Staff</span>
+                                <i class="ni ni-circle-08"  style="color: #5e72e4;"></i>
+                                <span class="nav-link-text">Manage Staff</span>
                             </a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('admin/fasilitas')) ? 'active' : '' }}" href="{{ url('/admin/fasilitas') }}">
-                                <i class="ni ni-single-02 text-yellow"></i>
+                                <i class="ni ni-books" style="color: #5e72e4;"></i>
                                 <span class="nav-link-text">Manage Fasilitas</span>
                             </a>
                         </li>
@@ -55,7 +55,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('admin/kegiatan')) ? 'active' : '' }}" href="{{ url('/admin/kegiatan') }}">
-                                <i class="ni ni-single-02 text-yellow"></i>
+                                <i class="ni ni-single-copy-04"  style="color: #5e72e4;"></i>
                                 <span class="nav-link-text">Manage Kegiatan</span>
                             </a>
                         </li>
@@ -63,7 +63,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('admin/galeri')) ? 'active' : '' }}" href="{{ url('/admin/galeri') }}">
-                                <i class="ni ni-single-02 text-yellow"></i>
+                                <i class="ni ni-album-2" style="color: #5e72e4;"></i>
                                 <span class="nav-link-text">Manage Galeri</span>
                             </a>
                         </li>
@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="dropdown-divider"></div>
 
-                                <a href="{{ url("/admin/staff") }}" class="dropdown-item">
+                                <a href="{{ url("/change-password") }}" class="dropdown-item">
                                     <i class="ni ni-key-25"></i>
                                     <span>Ubah Password</span>
                                 </a>

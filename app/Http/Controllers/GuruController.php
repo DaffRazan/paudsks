@@ -57,7 +57,7 @@ class GuruController extends Controller
         ]);
 
         Guru::create($request->except('_token'));
-        return redirect('admin/staff')->with('status', 'Data Mahasiswa Berhasil Ditambah');
+        return redirect('admin/staff')->with('status', 'Data Staff Berhasil Ditambah');
     }
 
     /**
@@ -104,7 +104,7 @@ class GuruController extends Controller
         ]);
 
         Guru::where('id', $id)->update($request->except(['_token', '_method']));
-        return redirect('admin/staff')->with('status', 'Data Mahasiswa Berhasil Diubah');
+        return redirect('admin/staff')->with('status', 'Data Staff Berhasil Diubah');
     }
 
     /**
@@ -118,6 +118,6 @@ class GuruController extends Controller
         $guru = Guru::find($id);
         $guru->delete();
 
-        return redirect('admin/staff')->with('status', 'Data Mahasiswa Berhasil Dihapus');
+        return redirect('admin/staff')->with('status', 'Data Staff Berhasil Dihapus');
     }
 }

@@ -15,7 +15,12 @@
                 {{-- {{ method_field('PUT') }} --}}
                 <div class="form-group">
                     <label class="form-control-label" for="input-username">Nama Gambar</label>
-                    <input type="text" id="input-username" class="form-control" name="nama_gambar" value="{{ @$galeri->nama_gambar }}" required>
+                    <input type="text" id="input-username" class="form-control @error('nama_gambar') is-invalid @enderror" name="nama_gambar" value="{{ @$galeri->nama_gambar }}" required>
+                    @error('nama_gambar')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror 
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="input-username">Gambar</label>

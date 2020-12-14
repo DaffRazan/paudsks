@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.blank')
+@section('title', 'ADMIN PAUD SKS | Reset Password')
 
 @section('content')
 <div class="container">

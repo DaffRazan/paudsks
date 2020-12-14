@@ -1,24 +1,28 @@
 @extends('layouts.blank')
-@section('title', 'ADMIN PAUD SKS | Login');
+@section('title', 'ADMIN PAUD SKS | Login')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Admin Login PAUD Smart Kids School</div>
+                <div class="card-header">Login Admin PAUD Smart Kids School</div>
+
+                @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+                @endif
+
+                @if (Session::has('error'))
+                <div class="alert alert-danger">
+                    {{Session::get('error')}}
+                </div>
+                @endif
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-
-                        <div class="form-group row">
-                            <div class="col-md-4 col-form-label text-md-right">
-                                @if(Session::has('error'))
-                                <strong class="text-warning">{{Session::get('error')}}</strong>
-                                @endif
-                            </div>
-                        </div>
 
                         <div class="form-group row">
                             <label for="email"
@@ -59,30 +63,35 @@
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember"
                                         {{ old('remember') ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div> --}}
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
+                        <label class="form-check-label" for="remember">
+                            {{ __('Remember Me') }}
+                        </label>
                 </div>
             </div>
+        </div> --}}
+
+        <div class="form-group row mb-0">
+            <div class="col-md-12 offset-md-2">
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Login') }}
+                </button>
+
+                @if (Route::has('password.request'))
+                <a class="btn btn-link" href="{{ route('password.request') }}">
+                    Lupa Password?
+                    {{-- {{ __('Forgot Your Password?') }} --}}
+                </a>
+                @endif
+
+                <a class="btn btn-link" href="https://wa.me/6282361143553" target="__blank">
+                    Kontak Admin
+                </a>
+            </div>
         </div>
+        </form>
     </div>
+</div>
+</div>
+</div>
 </div>
 @endsection

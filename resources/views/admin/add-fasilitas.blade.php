@@ -17,17 +17,28 @@
                 {{-- {{ method_field('PUT') }} --}}
                 <div class="form-group">
                     <label class="form-control-label" for="input-username">Nama Fasilitas</label>
-                    <input type="text" id="input-username" class="form-control" name="nama_fasilitas"
+                    <input type="text" id="input-username" class="form-control @error('nama_fasilitas') is-invalid @enderror" name="nama_fasilitas"
                         value="{{ @$fasilitas->nama_fasilitas }}" required>
+                    @error('nama_fasilitas')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Deskripsi</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi" value="{{ @$fasilitas->deskripsi }}" required></textarea>
+                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="exampleFormControlTextarea1" rows="3" name="deskripsi"
+                        value="{{ @$fasilitas->deskripsi }}" required></textarea>
+                    @error('deskripsi')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="input-username">Gambar</label>
-                    <input type="file" class="form-control-file" id="input-username" class="form-control" name="gambar_fasilitas"
-                        value="{{ @$fasilitas->gambar_fasilitas }}" required>
+                    <input type="file" class="form-control-file" id="input-username" class="form-control"
+                        name="gambar_fasilitas" value="{{ @$fasilitas->gambar_fasilitas }}" required>
                 </div>
             </form>
         </div>

@@ -16,8 +16,13 @@
                 {{-- {{ method_field('PUT') }} --}}
                 <div class="form-group">
                     <label class="form-control-label" for="input-username">Nama Kegiatan</label>
-                    <input type="text" id="input-username" class="form-control" name="nama_kegiatan" value="{{ @$Kegiatan->nama_kegiatan }}"
+                    <input type="text" id="input-username" class="form-control @error('nama_kegiatan') is-invalid @enderror" name="nama_kegiatan" value="{{ @$Kegiatan->nama_kegiatan }}"
                         required>
+                    @error('nama_kegiatan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror    
                 </div>
             </form>
         </div>

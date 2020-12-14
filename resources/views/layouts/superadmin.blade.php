@@ -22,6 +22,16 @@
 
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <!-- csrf-token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
@@ -114,6 +124,12 @@
                                     <h6 class="text-overflow m-0">Welcome</h6>
                                 </div>
                                 <div class="dropdown-divider"></div>
+
+                                <a href="{{ url("/change-password") }}" class="dropdown-item">
+                                    <i class="ni ni-key-25"></i>
+                                    <span>Ubah Password</span>
+                                </a>
+
                                 <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
                                     <i class="ni ni-user-run"></i>
