@@ -3,7 +3,7 @@
 - Download and Install [Git Bash](https://git-scm.com/download/win) to Run Laravel Development Server.
 - Place this project in `xampp/htdocs` directory.
 - Open XAMPP Control Panel and press Start **Apache** and **MySQL** Module.
-- Open Git Bash then command locate to this project `xampp/htdocs/nameOfThisProject`.
+- Open Git Bash then command locate to this project `cd /c/xampp/htdocs/nameOfThisProject`.
 - Run Laravel Development Server with command `php artisan serve`.
 - Copy localhost link and paste to **Mozilla** or **Firefox** Browser.
 - To access Main Page, navigate to http://127.0.0.1:8000/.
