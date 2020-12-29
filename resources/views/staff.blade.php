@@ -10,68 +10,35 @@
 
 </style>
 
-{{-- navbar --}}
-<div class="pt-2">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a href="{{ url('/') }}" class="rounded-pill nav-link mr-3 text-light" style="background-color: #197163">Smart Kids School</a>
+{{-- Section staff --}}
+<section id="staff">
+    <div class="container pt-5">
+        <div class="container bg-gradient-dark">
+            <h1 class="text-center title-staff" style="color:#197163">Staff Aktif
+                <script>
+                    document.write(new Date().getFullYear())
 
-            {{-- <a class="navbar-brand" href="#">Smart Kids School</a> --}}
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                </script>/ <script>
+                    document.write(new Date().getFullYear() + 1)
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">Beranda<span
-                                class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url('/staff') }}">Staff</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/fasilitas') }}">Fasilitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/kegiatan') }}">Kegiatan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/galeri') }}">Galeri</a>
-                    </li> 
-                    <li class="nav-item ml-2">
-                        <a class="btn btn-success" href="#footer" style="background-color: #197163">
-                            Hubungi Kami
-                        </a>
-                    </li>
-                </ul>
+                </script>
+            </h1>
+            <hr width="40%">
+        </div>
+
+        <div class="row text-center pt-4 animate__animated animate__fadeInUp">
+            @foreach ($guru as $i)
+            <div class="col-lg-4">
+                <img class="mb-3 rounded-circle h-50 w-50 staff-pic" src="{{ asset(Storage::url($i->foto_guru)) }}"
+                    alt="Staff PAUD Smart Kids School">
+                <h3 class="text-center teacher-name" style="color: #197163">{{$i->nama}}</h3>
+                <hr class="my-1">
+                <h5 class="text-center font-weight-light teacher-degree">{{$i->jabatan}}</h5>
             </div>
-        </nav>
+            @endforeach
+        </div>
     </div>
-</div>
+</section>
 
-<div class="container py-5">
-    <table class="table">
-        <thead class="text-light" style="background-color: #197163">
-                    <tr class="">
-                    <th scope="col">#</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Jabatan</th>
-                    <th scope="col">Pendidikan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($guru as $gr)
-                        <tr class="">
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $gr->nama }}</td>
-                            <td>{{ $gr->jabatan }}</td>
-                            <td>{{ $gr->pendidikan }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-    </table>
-</div>
 
 @endsection

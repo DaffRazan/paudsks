@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 // namespace model
 use App\Kegiatan;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+
 
 class KegiatanController extends Controller
 {
@@ -14,7 +18,6 @@ class KegiatanController extends Controller
         $this->middleware('auth');
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -22,9 +25,23 @@ class KegiatanController extends Controller
      */
     public function index()
     {
-        $kegiatan = Kegiatan::all();
+        $kegiatan = DB::table('kegiatan')->paginate(5);
         $user = Auth::user();
-        return view('admin.kegiatan', ['kegiatan' => $kegiatan, 'admin' => $user->hasRole('admin')]);
+        return view('admin.kegiatan', ['kegiatan' => $kegiatan, 'admin' => $user->hasRole('operator')]);
+    }
+
+    public function search(Request $request)
+    {
+        $user = Auth::user();
+
+        // menangkap data pencarian
+        $search = $request->search;
+
+        // mengambil data dari table pegawai sesuai pencarian data
+        $kegiatan = DB::table('kegiatan')->where('nama_kegiatan', 'like', "%" . $search . "%")->paginate();
+
+        // mengirim data pegawai ke view index
+        return view('admin.kegiatan', ['kegiatan' => $kegiatan, 'admin' => $user->hasRole('operator')]);
     }
 
     /**
@@ -49,11 +66,27 @@ class KegiatanController extends Controller
         $request->validate(
             [
                 'nama_kegiatan' => 'required',
+                'gambar_kegiatan' => 'required|mimes:jpg,png,jpeg,gif,svg',
+                'deskripsi_kegiatan' => 'required',
             ]
         );
 
+        // lokasi gambar
+        $gambar_kegiatan = $request->file('gambar_kegiatan');
+
+        // nama file
+        $nama_file = time() . "_" . $gambar_kegiatan->getClientOriginalName();
+
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'storage';
+        $gambar_kegiatan->move($tujuan_upload, $nama_file);
+
         // tambahkan data ke db
-        Kegiatan::create($request->all());
+        Kegiatan::create([
+            'nama_kegiatan' => $request->nama_kegiatan,
+            'gambar_kegiatan' => $nama_file,
+            'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
+        ]);
 
         return redirect('admin/kegiatan')->with('status', 'Kegiatan Berhasil Ditambahkan');
     }
@@ -90,16 +123,40 @@ class KegiatanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $kegiatan = Kegiatan::find($id);
+
         $request->validate(
             [
                 'nama_kegiatan' => 'required',
+                'gambar_kegiatan' => 'mimes:jpg,png,jpeg,gif,svg',
+                'deskripsi_kegiatan' => 'required',
             ]
         );
 
-        Kegiatan::where('id', $id)
-            ->update([
-                'nama_kegiatan' => $request->nama_kegiatan,
-            ]);
+        $update = [
+            'nama_kegiatan' => $request->nama_kegiatan,
+            'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
+        ];
+
+        // lokasi gambar
+        $gambar_kegiatan = $request->file('gambar_kegiatan');
+
+        if ($request->hasFile('gambar_kegiatan')) {
+            // nama file
+            $nama_file = time() . "_" . $gambar_kegiatan->getClientOriginalName();
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'storage';
+            $gambar_kegiatan->move($tujuan_upload, $nama_file);
+            $update['gambar_kegiatan'] = $nama_file;
+
+            //code for remove old file
+            if ($kegiatan->gambar_kegiatan != ''  && $kegiatan->gambar_kegiatan != null) {
+                $file_old = $tujuan_upload . "/" . $kegiatan->gambar_kegiatan;
+                unlink($file_old);
+            }
+        }
+
+        Kegiatan::where('id', $id)->update($update);
 
         return redirect('admin/kegiatan')->with('status', 'Kegiatan Berhasil Diubah');
     }
@@ -112,6 +169,10 @@ class KegiatanController extends Controller
      */
     public function destroy($id)
     {
+        // hapus file
+        $kegiatan = Kegiatan::where('id', $id)->first();
+        File::delete('storage/' . $kegiatan->gambar_kegiatan);
+
         $kegiatan = Kegiatan::find($id);
         $kegiatan->delete();
 

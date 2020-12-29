@@ -6,6 +6,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="icon" href="{{ asset('uploads/slides/icon.jpg') }}" type="image/x-icon" />
+
+    {{-- Animate CSS --}}
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <script src="{{ mix('js/app.js') }}"></script>
+
+    {{-- Mapbox --}}
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+
+    {{-- Lightbox --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+    <link href="{{ asset('css/lightbox.css') }}" rel="stylesheet" />
+
+    {{-- Font Awesome SVG --}}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+        integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -45,10 +63,108 @@
             line-height: 0;
         }
 
+        .smart-scroll {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        .scrolled-down {
+            transform: translateY(-100%);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .scrolled-up {
+            transform: translateY(0);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .active {
+            color: #197163 !important;
+        }
+
+        @media (max-width: 400px) {
+            .about-us {
+                margin-top: 2rem;
+            }
+
+            .footer-container {
+                padding-top: 1rem !important;
+            }
+
+            .staff-pic {
+                height: 40% !important;
+                width: 40% !important;
+            }
+
+            .title-staff {
+                font-size: 1.5rem !important;
+            }
+
+            .teacher-name {
+                font-size: 1rem !important;
+            }
+
+            .teacher-degree {
+                font-size: 0.7rem !important;
+
+            }
+        }
+
     </style>
 </head>
 
 <body class="bg-light">
+    {{-- NAVBAR --}}
+    <div class="pt-2">
+        <div class="container">
+            <nav id="navbar" class="navbar navbar-expand-lg navbar-light smart-scroll bg-light container">
+                <a href="{{ url('/') }}" class="rounded-pill nav-link mr-3 text-light navbar-brand"
+                    style="background-color: #197163">Smart Kids School</a>
+
+                {{-- <a class="navbar-brand" href="#">Smart Kids School</a> --}}
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('/')) ? 'active' : '' }}"
+                                href="{{ url('/') }}">Beranda<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('staff')) ? 'active' : '' }}"
+                                href="{{ url('/staff') }}">Staff</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('fasilitas')) ? 'active' : '' }}"
+                                href="{{ url('/fasilitas') }}">Fasilitas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('kegiatan')) ? 'active' : '' }}"
+                                href="{{ url('/kegiatan') }}">Kegiatan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('galeri')) ? 'active' : '' }}"
+                                href="{{ url('/galeri') }}">Galeri</a>
+                        </li>
+                        <li class="nav-item ml-2">
+                            <a class="btn btn-success" href="#footer" style="background-color: #197163">
+                                Hubungi Kami
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    {{-- END NAVBAR --}}
+
     @yield('container')
 
     <footer id="footer" class="py-5 " style="background-color: #197163; position: relative;">
@@ -58,7 +174,7 @@
                 <path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="shape-fill"></path>
             </svg>
         </div>
-        <div class="container" style="padding-top: 10rem ">
+        <div class="container footer-container" style="padding-top: 10rem">
             <div class="row text-light mt-5">
                 <div class="col-lg-6">
                     <h5>&copy; Smart Kids School <script>
@@ -73,23 +189,25 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3">
-                    <h5>Tentang Kami</h5>
+                <div class="col-lg-3 about-us">
+                    <h5 class="">Quick Links</h5>
                     <div class="mt-4">
                         <ul class="" style="padding:0; list-style:none;">
-                            <li class="mb-0"><a href="{{ url('/staff') }}" class="text-light"
+                            <li class=""><a href="{{ url('/staff') }}" class="text-light"
                                     style="text-decoration:none;">Staff & Dewan Guru</a></li>
-                            <li class="mb-0"><a href="{{ url('/fasilitas') }}" class="text-light"
+                            <hr class="my-1">
+                            <li class=""><a href="{{ url('/fasilitas') }}" class="text-light"
                                     style="text-decoration:none;">Fasilitas Sekolah</a></li>
-                            <li class="mb-0"><a href="{{ url('/kegiatan') }}" class="text-light"
+                            <hr class="my-1">
+                            <li class=""><a href="{{ url('/kegiatan') }}" class="text-light"
                                     style="text-decoration:none;">Kegiatan Sekolah</a></li>
-                            <li class="mb-0"><a href="{{ url('/galeri') }}" class="text-light"
-                                    style="text-decoration:none;">Galeri Sekolah</a></li>
+                            <hr class="my-1">
+                            <li class=""><a href="{{ url('/galeri') }}" class="text-light"
+                                    style="text-decoration:none;">Galeri Sekolah</a></li class="my-1">
+                            <hr class="my-1">
                         </ul>
                     </div>
                 </div>
-
-
 
                 <div class="col-lg-3">
                     <h5>Sosial Media</h5>
@@ -130,6 +248,28 @@
     </footer>
 
     <!-- Optional JavaScript -->
+
+    {{-- Scroll behavior --}}
+    <script>
+        // add padding top to show content behind navbar
+        $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
+
+        // detect scroll top or down
+        if ($('.smart-scroll').length > 0) { // check if element exists
+            var last_scroll_top = 0;
+            $(window).on('scroll', function () {
+                scroll_top = $(this).scrollTop();
+                if (scroll_top < last_scroll_top) {
+                    $('.smart-scroll').removeClass('scrolled-down').addClass('scrolled-up');
+                } else {
+                    $('.smart-scroll').removeClass('scrolled-up').addClass('scrolled-down');
+                }
+                last_scroll_top = scroll_top;
+            });
+        }
+
+    </script>
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">

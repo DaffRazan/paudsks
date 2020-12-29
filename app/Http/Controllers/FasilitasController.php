@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 // namespace model
 use App\Fasilitas;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class FasilitasController extends Controller
@@ -23,10 +24,25 @@ class FasilitasController extends Controller
      */
     public function index()
     {
-        $fasilitas = Fasilitas::all();
+        $fasilitas = DB::table('fasilitas')->paginate(5);
         $user = Auth::user();
-        return view('admin.fasilitas', ['fasilitas' => $fasilitas, 'admin' => $user->hasRole('admin')]);
+        return view('admin.fasilitas', ['fasilitas' => $fasilitas, 'admin' => $user->hasRole('operator')]);
     }
+
+    public function search(Request $request)
+    {
+        $user = Auth::user();
+
+        // menangkap data pencarian
+        $search = $request->search;
+
+        // mengambil data dari table fasilitas sesuai pencarian data
+        $fasilitas = DB::table('fasilitas')->where('nama_fasilitas', 'like', "%" . $search . "%")->paginate();
+
+        // mengirim data fasilitas ke view index
+        return view('admin.fasilitas', ['fasilitas' => $fasilitas, 'admin' => $user->hasRole('operator')]);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -105,28 +121,39 @@ class FasilitasController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $fasilitas = Fasilitas::find($id);
+
         $request->validate([
             'nama_fasilitas' => 'required',
             'deskripsi' => 'required',
-            'gambar_fasilitas' => 'required|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'gambar_fasilitas' => 'mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
+        $update = [
+            'nama_fasilitas' => $request->nama_fasilitas,
+            'deskripsi' => $request->deskripsi,
+        ];
+
         // lokasi gambar
-        $gambar_fasilitas = $request->file('gambar');
+        $gambar_fasilitas = $request->file('gambar_fasilitas');
 
-        // nama file
-        $nama_file = time() . "_" . $gambar_fasilitas->getClientOriginalName();
+        if ($request->hasFile('gambar_fasilitas')) {
+            // nama file
+            $nama_file = time() . "_" . $gambar_fasilitas->getClientOriginalName();
 
-        // isi dengan nama folder tempat kemana file diupload
-        $tujuan_upload = 'storage';
-        $gambar_fasilitas->move($tujuan_upload, $nama_file);
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'storage';
+            $gambar_fasilitas->move($tujuan_upload, $nama_file);
+            $update['gambar_fasilitas'] = $nama_file;
 
-        Fasilitas::where('id', $id)
-            ->update([
-                'nama_fasilitas' => $request->nama_fasilitas,
-                'deskripsi' => $request->deskripsi,
-                'gambar_fasilitas' => $nama_file,
-            ]);
+            //code for remove old file
+            if ($fasilitas->gambar_fasilitas != ''  && $fasilitas->gambar_fasilitas != null) {
+                $file_old = $tujuan_upload . "/" . $fasilitas->gambar_fasilitas;
+                unlink($file_old);
+            }
+        }
+
+        Fasilitas::where('id', $id)->update($update);
 
         return redirect('admin/fasilitas')->with('status', 'Fasilitas Berhasil Diubah');
     }

@@ -27,8 +27,23 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $user = DB::table('users')->where('role', 2)->get();
+        $user = DB::table('users')->where('role', 2)->paginate(5);
         $user_auth = Auth::user();
+        return view('admin.index', ['user' => $user, 'admin' => $user_auth->hasRole('admin')]);
+    }
+
+    public function search(Request $request)
+    {
+        $user_auth = Auth::user();
+
+        // menangkap data pencarian
+        $search = $request->search;
+
+        $user = DB::table('users')->where([
+            ['role', 2],
+            ['name', 'like', "%" . $search . "%"],
+        ])->paginate();
+
         return view('admin.index', ['user' => $user, 'admin' => $user_auth->hasRole('admin')]);
     }
 

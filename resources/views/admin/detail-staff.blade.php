@@ -2,52 +2,30 @@
 @section('title', 'Admin PAUD SKS | Detail Staff')
 
 @section('content')
-<div class="col">
-    <div class="card">
-        <div class="card-header border-0 d-flex justify-content-between">
-            <h3 class="mb-0">Detail Staff</h3>
+<div class="col" style="">
+    <div class="card border-0">
+        <div class="card-header d-flex justify-content-between">
+            <img src="{{ asset(Storage::url($guru->foto_guru)) }}" class="card-img-top img-thumbnail h-25 w-25 mx-auto"
+                alt="...">
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table align-items-center table-flush">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col" class="sort" data-sort="name">Nama</th>
-                            <th scope="col" class="sort" data-sort="status">Jabatan</th>
-                            <th scope="col" class="sort" data-sort="status">Pendidikan</th>
-                            <th scope="col" class="sort" data-sort="status">Alamat</th>
-                            <th scope="col" class="sort" data-sort="status">Tanggal Mulai Tugas</th>
-                            <th scope="col" class="sort" data-sort="status">Created at</th>
-                            <th scope="col" class="sort" data-sort="status">Updated at</th>
-                        </tr>
-                    </thead>
-                    <tbody class="list">
-                        <tr>
-                            <td>
-                                {{  $guru->nama }}
-                            </td>
-                            <td>
-                                {{ $guru->jabatan }}
-                            </td>
-                            <td>
-                                {{ $guru->pendidikan }}
-                            </td>
-                            <td>
-                                {{ $guru->alamat }}
-                            </td>
-                            <td>
-                                {{ $guru->tgl_mulai_tugas }}
-                            </td>
-                            <td>
-                                {{ $guru->created_at }}
-                            </td>
-                            <td>
-                                {{ $guru->updated_at }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
+        <div class="card-body text-center">
+            <h2 class="card-title mb-0" style="color: #5e72e4">Nama: </h2>
+            <p class="card-text">{{ $guru->nama }}</p>
+            <h2 class="card-title mb-0" style="color: #5e72e4">Jabatan: </h2>
+            <p class="card-text">{{ $guru->jabatan }}</p>
+            <h2 class="card-title mb-0" style="color: #5e72e4">Pendidikan Terakhir: </h2>
+            <p class="card-text">{{ $guru->pendidikan }}</p>
+            <h2 class="card-title mb-0" style="color: #5e72e4">Alamat: </h2>
+            <p class="card-text">{{ $guru->alamat }}</p>
+            <h2 class="card-title mb-0" style="color: #5e72e4">Tanggal Mulai Tugas: </h2>
+            <p class="card-text">{{ $guru->tgl_mulai_tugas }}</p>
+            <h2 class="card-title mb-0" style="color: #5e72e4">Dibuat Tanggal: </h2>
+            <p class="card-text">{{ $guru->created_at }}</p>
+            <h2 class="card-title mb-0" style="color: #5e72e4">Diubah Tanggal: </h2>
+            <p class="card-text">{{ $guru->updated_at }}</p>
         </div>
     </div>
+
+</div>
 @endsection

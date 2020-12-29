@@ -27,9 +27,6 @@
                     <label class="form-control-label" for="input-username">Gambar</label>
                     <input type="file" id="input-username" class="form-control" name="gambar_fasilitas">
                 </div>
-                <div class="form-group">
-                    <img width="150px" src="{{ asset(Storage::url($fasilitas->gambar_fasilitas)) }}" alt="">
-                </div>
             </div>
         </form>
     </div>

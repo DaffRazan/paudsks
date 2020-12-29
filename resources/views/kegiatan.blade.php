@@ -2,55 +2,40 @@
 @section('title', 'Program Pembelajaran dan Kegiatan Sekolah - Smart Kids School')
 
 @section('container')
-{{-- navbar --}}
-<div class="pt-2">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a href="{{ url('/') }}" class="rounded-pill nav-link mr-3 text-light"
-                style="background-color: #197163">Smart Kids School</a>
 
-            {{-- <a class="navbar-brand" href="#">Smart Kids School</a> --}}
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<style>
+    @media (max-width: 400px) {
+        .title-kegiatan {
+            font-size: 1.5rem;
+        }
+    }
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">Beranda<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/staff') }}">Staff</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/fasilitas') }}">Fasilitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url('/kegiatan') }}">Kegiatan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/galeri') }}">Galeri</a>
-                    </li>
-                    <li class="nav-item ml-2">
-                        <a class="btn btn-success" href="#footer" style="background-color: #197163">
-                            Hubungi Kami
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</div>
+</style>
 
 {{-- Program pembelajaran --}}
 <div class="container py-5">
-    <h1 class="mb-5 pb-3">Program Pembelajaran dan Kegiatan</h1>
+    <h1 class="text-center title-kegiatan" style="color:#197163">Program Pembelajaran dan Kegiatan</h1>
+    <hr width="40%" class="mb-5">
 
     @foreach ($kegiatan as $kg)
-        <h2 class="font-weight-normal">#{{ $loop->iteration }} <span class="mr-3">{{ $kg->nama_kegiatan }}</span></h2>
-        <hr class="pb-5 mb-3">
+    <div class="row animate__animated animate__fadeInUp">
+        <div class="col-lg-6">
+            <h2 class="font-weight-normal" style="color:#197163">{{ $loop->iteration }}. <span
+                    class="mr-3">{{ $kg->nama_kegiatan }}</span>
+            </h2>
+            <p class="font-weight-light">{{$kg->deskripsi_kegiatan}}</p>
+        </div>
+        <div class="col-lg-6">
+            @if ($kg->gambar_kegiatan)
+            <img class="mb-2 img-thumbnail" src="{{ asset(Storage::url($kg->gambar_kegiatan)) }}" alt="">
+            @endif
+        </div>
+    </div>
+    <hr class="pb-5 mb-3">
     @endforeach
+
+
+
 </div>
 
 @endsection

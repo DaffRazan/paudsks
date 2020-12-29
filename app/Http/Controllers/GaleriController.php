@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Auth;
 // namespace model
 use App\Galeri;
@@ -23,10 +24,25 @@ class GaleriController extends Controller
      */
     public function index()
     {
-        $galeri = Galeri::all();
+        $galeri = DB::table('galeri')->paginate(5);
         $user = Auth::user();
-        return view('admin.galeri', ['galeri' => $galeri, 'admin' => $user->hasRole('admin')]);
+        return view('admin.galeri', ['galeri' => $galeri, 'admin' => $user->hasRole('operator')]);
     }
+
+    public function search(Request $request)
+    {
+        $user = Auth::user();
+
+        // menangkap data pencarian
+        $search = $request->search;
+
+        // mengambil data dari table pegawai sesuai pencarian data
+        $galeri = DB::table('galeri')->where('nama_gambar', 'like', "%" . $search . "%")->paginate();
+
+        // mengirim data pegawai ke view index
+        return view('admin.galeri', ['galeri' => $galeri, 'admin' => $user->hasRole('operator')]);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -101,28 +117,39 @@ class GaleriController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $galeri = Galeri::find($id);
+
         $request->validate(
             [
                 'nama_gambar' => 'required',
-                'gambar' => 'required|mimes:jpg,png,jpeg,gif,svg',
+                'gambar' => 'mimes:jpg,png,jpeg,gif,svg',
             ]
         );
+
+        $update = [
+            'nama_gambar' => $request->nama_gambar,
+        ];
 
         // lokasi gambar
         $gambar = $request->file('gambar');
 
-        // nama file
-        $nama_file = time() . "_" . $gambar->getClientOriginalName();
+        if ($request->hasFile('gambar')) {
+            // nama file
+            $nama_file = time() . "_" . $gambar->getClientOriginalName();
 
-        // isi dengan nama folder tempat kemana file diupload
-        $tujuan_upload = 'storage';
-        $gambar->move($tujuan_upload, $nama_file);
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'storage';
+            $gambar->move($tujuan_upload, $nama_file);
+            $update['gambar'] = $nama_file;
 
-        Galeri::where('id', $id)
-            ->update([
-                'nama_gambar' => $request->nama_gambar,
-                'gambar' => $nama_file,
-            ]);
+            //code for remove old file
+            if ($galeri->gambar != ''  && $galeri->gambar != null) {
+                $file_old = $tujuan_upload . "/" . $galeri->gambar;
+                unlink($file_old);
+            }
+        }
+
+        Galeri::where('id', $id)->update($update);
 
         return redirect('admin/galeri')->with('status', 'Galeri Berhasil Diubah');
     }

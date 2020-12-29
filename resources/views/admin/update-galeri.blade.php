@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="input-username">Gambar</label>
-                    <input type="file" id="input-username" class="form-control-file" name="gambar" required>
+                    <input type="file" id="input-username" class="form-control-file" name="gambar">
                 </div>
             </div>
         </form>

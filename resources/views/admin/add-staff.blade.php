@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
             <form id="form-add-staff" action="{{ url('/admin/staff') }}{{ isset($guru) ? '/'.$guru->id : '' }}"
-                method="post">
+                method="post" enctype="multipart/form-data">
                 @csrf
                 {{-- {{ method_field('PUT') }} --}}
                 <div class="form-group">
@@ -39,7 +39,8 @@
 
                 <div class="form-group">
                     <label for="pendidikan" class="form-control-label">Pendidikan</label>
-                    <input type="text" name="pendidikan" class="form-control  @error('pendidikan') is-invalid @enderror" value="{{ old('pendidikan') }}" required>
+                    <input type="text" name="pendidikan" class="form-control  @error('pendidikan') is-invalid @enderror"
+                        value="{{ old('pendidikan') }}" required>
                     @error('pendidikan')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -49,7 +50,8 @@
 
                 <div class="form-group">
                     <label for="alamat" class="form-control-label">Alamat</label>
-                    <input type="text" name="alamat" class="form-control @error('alamat') is-invalid @enderror" value="{{ old('alamat') }}" required>
+                    <input type="text" name="alamat" class="form-control @error('alamat') is-invalid @enderror"
+                        value="{{ old('alamat') }}" required>
                     @error('alamat')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -60,8 +62,21 @@
 
                 <div class="form-group">
                     <label for="jabatan" class="form-control-label">Jabatan</label>
-                    <input type="text" name="jabatan" class="form-control @error('jabatan') is-invalid @enderror" value="{{ old('jabatan') }}" required>
+                    <input type="text" name="jabatan" class="form-control @error('jabatan') is-invalid @enderror"
+                        value="{{ old('jabatan') }}" required>
                     @error('jabatan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="input-username">Foto Staff</label>
+                    <input type="file" id="input-username" class="form-control-file" name="foto_guru"
+                        value="{{ @$guru->foto_guru }}" required>
+
+                    @error('foto_guru')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>

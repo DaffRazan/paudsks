@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\File;
+
+
 // namespace model
 use App\Guru;
 
@@ -24,9 +27,24 @@ class GuruController extends Controller
      */
     public function index()
     {
-        $guru = Guru::all();
+        $guru = DB::table('guru')->paginate(5);
         $user = Auth::user();
-        return view('admin.staff', ['guru' => $guru, 'admin' => $user->hasRole('admin')]);
+
+        return view('admin.staff', ['guru' => $guru, 'admin' => $user->hasRole('operator')]);
+    }
+
+    public function search(Request $request)
+    {
+        $user = Auth::user();
+
+        // menangkap data pencarian
+        $search = $request->search;
+
+        // mengambil data dari table pegawai sesuai pencarian data
+        $guru = DB::table('guru')->where('nama', 'like', "%" . $search . "%")->paginate();
+
+        // mengirim data pegawai ke view index
+        return view('admin.staff', ['guru' => $guru, 'admin' => $user->hasRole('operator')]);
     }
 
     /**
@@ -54,9 +72,28 @@ class GuruController extends Controller
             'pendidikan' =>  ['required', 'string', 'max:255'],
             'alamat' =>  ['required', 'string', 'max:255'],
             'jabatan' =>  ['required', 'string', 'max:255'],
+            'foto_guru' => 'required|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
-        Guru::create($request->except('_token'));
+        // lokasi gambar
+        $foto_guru = $request->file('foto_guru');
+
+        // nama file
+        $nama_file = time() . "_" . $foto_guru->getClientOriginalName();
+
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'storage';
+        $foto_guru->move($tujuan_upload, $nama_file);
+
+        Guru::create([
+            'nama' => $request->nama,
+            'tgl_mulai_tugas' => $request->tgl_mulai_tugas,
+            'pendidikan' => $request->pendidikan,
+            'alamat' => $request->alamat,
+            'jabatan' => $request->jabatan,
+            'foto_guru' => $nama_file,
+        ]);
+
         return redirect('admin/staff')->with('status', 'Data Staff Berhasil Ditambah');
     }
 
@@ -95,15 +132,45 @@ class GuruController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $guru = Guru::find($id);
+
         $request->validate([
             'nama' => ['required', 'string', 'max:255'],
             'tgl_mulai_tugas' =>  ['required'],
             'pendidikan' =>  ['required', 'string', 'max:255'],
             'alamat' =>  ['required', 'string', 'max:255'],
             'jabatan' =>  ['required', 'string', 'max:255'],
+            'foto_guru' => 'mimes:jpg,png,jpeg,gif,svg',
         ]);
 
-        Guru::where('id', $id)->update($request->except(['_token', '_method']));
+        $update = [
+            'nama' => $request->nama,
+            'tgl_mulai_tugas' => $request->tgl_mulai_tugas,
+            'pendidikan' => $request->pendidikan,
+            'alamat' => $request->alamat,
+            'jabatan' => $request->jabatan,
+        ];
+
+        if ($request->hasFile('foto_guru')) {
+            // lokasi gambar
+            $foto_guru = $request->file('foto_guru');
+
+            // nama file
+            $nama_file = time() . "_" . $foto_guru->getClientOriginalName();
+
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'storage';
+            $foto_guru->move($tujuan_upload, $nama_file);
+            $update['foto_guru'] = $nama_file;
+
+            // code for remove old file
+            if ($guru->foto_guru != ''  && $guru->foto_guru != null) {
+                $file_old = $tujuan_upload . "/" . $guru->foto_guru;
+                unlink($file_old);
+            }
+        }
+
+        Guru::where('id', $id)->update($update);
         return redirect('admin/staff')->with('status', 'Data Staff Berhasil Diubah');
     }
 
@@ -115,6 +182,10 @@ class GuruController extends Controller
      */
     public function destroy($id)
     {
+        // hapus file
+        $guru = Guru::where('id', $id)->first();
+        File::delete('storage/' . $guru->foto_guru);
+
         $guru = Guru::find($id);
         $guru->delete();
 

@@ -9,6 +9,28 @@
         <a href="{{ url('/admin/galeri/add') }}" class="btn btn-sm btn-neutral">Tambah</a>
     </div>
 
+    <div class="py-3">
+        <!-- Search form -->
+        <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main"
+            action="/admin/galeri/search" method="GET">
+            <div class="form-group mb-0">
+                <div class="input-group input-group-alternative input-group-merge">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><button class="btn btn-sm" type="submit"><i
+                                    class="fas fa-search"></i></button></span>
+                    </div>
+                    <input class="form-control" name="search" placeholder="Cari" type="text"
+                        value="{{ old('search') }}">
+                </div>
+            </div>
+            <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main"
+                aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </form>
+        <!-- End Search form -->
+    </div>
+
     @if (session('status'))
     <div class="alert alert-success">
         {{ session('status') }}
@@ -29,10 +51,11 @@
                     </tr>
                 </thead>
                 <tbody class="list">
+                    <?php $skipped = $galeri->currentPage() * $galeri->perPage() - $galeri->perPage(); ?>
                     @foreach ($galeri as $glr)
                     <tr id="gid{{$glr->id}}">
                         <td>
-                            {{ $loop->iteration }}
+                            {{ $loop->iteration + $skipped }}
                         </td>
                         <td>
                             {{ $glr->nama_gambar }}
@@ -50,8 +73,7 @@
                                 </svg>
                             </a>
 
-                            <a class="btn btn-icon-only"
-                                onclick="deleteConfirmation({{$glr->id}})">
+                            <a class="btn btn-icon-only" onclick="deleteConfirmation({{$glr->id}})">
                                 <svg style="pointer-events: none" width="24" height="24" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -75,6 +97,15 @@
         </div>
     </div>
 
+    {{-- Pagination --}}
+    <div class="card-footer py-4">
+        <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+                {{ $galeri->links() }}
+            </ul>
+        </nav>
+    </div>
+    {{-- End Pagination --}}
 
 </div>
 
@@ -93,7 +124,7 @@
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     type: 'DELETE',
-                    url: '/admin/galeri/'+id,
+                    url: '/admin/galeri/' + id,
                     data: {
                         _token: CSRF_TOKEN
                     },
@@ -101,7 +132,7 @@
                     success: function (response) {
                         swal("Galeri berhasil dihapus", response.message, "success")
                         $("#success").html(response.message)
-                        $('#gid'+id).remove()
+                        $('#gid' + id).remove()
                     }
                 });
             } else {

@@ -12,7 +12,7 @@
 
         <div class="card-body">
             <form id="form-add-staff" action="{{ url('/admin/staff') }}{{ isset($guru) ? '/'.$guru->id : '' }}"
-                method="post">
+                method="post" enctype="multipart/form-data">
                 @csrf
                 {{ method_field('PUT') }}
                 <div class="form-group">
@@ -66,6 +66,18 @@
                     <input type="text" name="jabatan" class="form-control @error('jabatan') is-invalid @enderror"
                         value="{{$guru->jabatan}}" required>
                     @error('jabatan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="input-username">Foto Staff</label>
+                    <input type="file" id="input-username" class="form-control-file" name="foto_guru"
+                        value="{{ $guru->foto_guru }}">
+
+                    @error('foto_guru')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>

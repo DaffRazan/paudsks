@@ -23,6 +23,7 @@ Route::get('/galeri', 'PagesController@galeri');
 // ADMIN
 Route::get('/admin', 'AdminController@index')->middleware('role:admin');
 Route::get('/admin/operator/add', 'AdminController@create')->middleware('role:admin');
+Route::get('/admin/operator/search', 'AdminController@search')->middleware('role:admin');
 Route::post('/admin', 'AdminController@store')->middleware('role:admin');
 Route::get('/admin/operator/edit/{id}', 'AdminController@edit')->middleware('role:admin');
 Route::patch('/admin/{id}', 'AdminController@update')->middleware('role:admin');
@@ -35,6 +36,7 @@ Route::post('change-password', 'ChangePasswordController@store')->name('change.p
 // STAFF
 Route::get('/admin/staff', 'GuruController@index')->middleware('role:operator');
 Route::post('/admin/staff', 'GuruController@store')->middleware('role:operator');
+Route::get('/admin/staff/search', 'GuruController@search')->middleware('role:operator');
 Route::put('/admin/staff/{id}', 'GuruController@update')->middleware('role:operator');
 Route::get('/admin/staff/detail/{id}', 'GuruController@show')->middleware('role:operator');
 Route::get('/admin/staff/add', 'GuruController@create')->middleware('role:operator');
@@ -44,6 +46,7 @@ Route::delete('/admin/staff/{id}', 'GuruController@destroy')->middleware('role:o
 // KEGIATAN
 Route::get('/admin/kegiatan', 'KegiatanController@index')->middleware('role:operator');
 Route::get('/admin/kegiatan/add', 'KegiatanController@create')->middleware('role:operator');
+Route::get('/admin/kegiatan/search', 'KegiatanController@search')->middleware('role:operator');
 Route::post('/admin/kegiatan', 'KegiatanController@store')->middleware('role:operator');
 Route::get('/admin/kegiatan/edit/{id}', 'KegiatanController@edit')->middleware('role:operator');
 Route::patch('/admin/kegiatan/{id}', 'KegiatanController@update')->middleware('role:operator');
@@ -52,6 +55,7 @@ Route::delete('/admin/kegiatan/{id}', 'KegiatanController@destroy')->middleware(
 // GALERI
 Route::get('/admin/galeri', 'GaleriController@index')->middleware('role:operator');
 Route::get('/admin/galeri/add', 'GaleriController@create')->middleware('role:operator');
+Route::get('/admin/galeri/search', 'GaleriController@search')->middleware('role:operator');
 Route::post('/admin/galeri', 'GaleriController@store')->middleware('role:operator');
 Route::get('/admin/galeri/edit/{id}', 'GaleriController@edit')->middleware('role:operator');
 Route::patch('/admin/galeri/{id}', 'GaleriController@update')->middleware('role:operator');
@@ -60,6 +64,7 @@ Route::delete('/admin/galeri/{id}', 'GaleriController@destroy')->middleware('rol
 // FASILITAS
 Route::get('/admin/fasilitas', 'FasilitasController@index')->middleware('role:operator');
 Route::get('/admin/fasilitas/add', 'FasilitasController@create')->middleware('role:operator');
+Route::get('/admin/fasilitas/search', 'FasilitasController@search')->middleware('role:operator');
 Route::post('/admin/fasilitas', 'FasilitasController@store')->middleware('role:operator');
 Route::get('/admin/fasilitas/edit/{id}', 'FasilitasController@edit')->middleware('role:operator');
 Route::patch('/admin/fasilitas/{id}', 'FasilitasController@update')->middleware('role:operator');

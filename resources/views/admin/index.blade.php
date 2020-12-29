@@ -10,6 +10,28 @@
             <a href="{{ url('/admin/operator/add') }}" class="btn btn-sm btn-neutral">Tambah</a>
         </div>
 
+        <div class="py-3 px-3">
+        <!-- Search form -->
+        <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main"
+            action="/admin/operator/search" method="GET">
+            <div class="form-group mb-0">
+                <div class="input-group input-group-alternative input-group-merge">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><button class="btn btn-sm" type="submit"><i
+                                    class="fas fa-search"></i></button></span>
+                    </div>
+                    <input class="form-control" name="search" placeholder="Cari" type="text"
+                        value="{{ old('search') }}">
+                </div>
+            </div>
+            <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main"
+                aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </form>
+        <!-- End Search form -->
+    </div>
+
         @if (session('status'))
         <div class="alert alert-success">
             {{ session('status') }}
@@ -66,6 +88,16 @@
                 </table>
             </div>
         </div>
+
+        {{-- Pagination --}}
+        <div class="card-footer py-4">
+            <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                    {{ $user->links() }}
+                </ul>
+            </nav>
+        </div>
+        {{-- End Pagination --}}
 
     </div>
 </div>

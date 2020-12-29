@@ -8,6 +8,28 @@
         <a href="{{ url('/admin/staff/add') }}" class="btn btn-sm btn-neutral">Tambah</a>
     </div>
 
+    <div class="py-3">
+        <!-- Search form -->
+        <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main"
+            action="/admin/staff/search" method="GET">
+            <div class="form-group mb-0">
+                <div class="input-group input-group-alternative input-group-merge">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><button class="btn btn-sm" type="submit"><i
+                                    class="fas fa-search"></i></button></span>
+                    </div>
+                    <input class="form-control" name="search" placeholder="Cari" type="text"
+                        value="{{ old('search') }}">
+                </div>
+            </div>
+            <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main"
+                aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </form>
+        <!-- End Search form -->
+    </div>
+
     @if (session('status'))
     <div class="alert alert-success">
         {{ session('status') }}
@@ -21,19 +43,24 @@
                     <tr>
                         <th scope="col" class="sort" data-sort="name">No</th>
                         <th scope="col" class="sort" data-sort="name">Nama</th>
+                        <th scope="col" class="sort" data-sort="name">Foto</th>
                         <th scope="col" class="sort" data-sort="status">Jabatan</th>
                         <th scope="col" class="sort" data-sort="status">Tanggal Mulai Tugas</th>
                         <th scope="col" class="sort" data-sort="status">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="list">
+                    <?php $skipped = $guru->currentPage() * $guru->perPage() - $guru->perPage(); ?>
                     @foreach ($guru as $staf)
                     <tr id="sid{{$staf->id}}">
                         <td>
-                            {{ $loop->iteration }}
+                            {{ $loop->iteration + $skipped }}
                         </td>
                         <td>
                             {{ $staf->nama }}
+                        </td>
+                        <td>
+                            <img width="150px" src="{{ asset(Storage::url($staf->foto_guru)) }}" alt="STAFF">
                         </td>
                         <td>
                             {{ $staf->jabatan }}
@@ -78,6 +105,22 @@
         </div>
     </div>
 
+    {{-- Pagination --}}
+    <div class="card-footer py-4">
+        <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+                {{ $guru->links() }}
+            </ul>
+        </nav>
+    </div>
+    {{-- End Pagination --}}
+
+
+
+    {{-- <div class="container">
+        Jumlah Data : {{ $guru->total() }} <br />
+</div> --}}
+
 </div>
 
 <script>
@@ -95,7 +138,7 @@
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     type: 'DELETE',
-                    url: '/admin/staff/'+id,
+                    url: '/admin/staff/' + id,
                     data: {
                         _token: CSRF_TOKEN
                     },
@@ -103,7 +146,7 @@
                     success: function (response) {
                         swal("Staff berhasil dihapus", response.message, "success")
                         $("#success").html(response.message)
-                        $('#sid'+id).remove()
+                        $('#sid' + id).remove()
                     }
                 });
             } else {
